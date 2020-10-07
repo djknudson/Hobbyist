@@ -1,17 +1,17 @@
-
-
-    <div class="container text-center">
-    <h1><b><%= @hobby.name %></b></h1>
-    <br>
-    <p style="font-size:150%;"><%= @hobby.description %></p>
-    <p style="font-size:250%;"><b>Category: <% @hobby.categories.each do |c| %></b></p>
-    <p style="font-size:200%;"><%= link_to c.name, c %></p>
-    <% end %></h2>
+<div class="container text-center">
     <div class="col-lg-auto">
-            <img src="<%= @hobby.categories.first.image %>" width="500" alt="outdoors photo">
-         </div>
+            <img src="<%= @hobby.categories.first.image %>" width="1000" alt="outdoors photo">
     </div>
+    <br>
+        <h1><b><%= @hobby.name %></b></h1>
+        <br>
+        <p style="font-size:175%;"><b>Category: </b><% @hobby.categories.each do |c| %>
+            <%= link_to c.name, c %></p>
+        <% end %>
+        <br>
+        <p style="font-size:125%;"><%= @hobby.description %></p>
 </div>
+    <br><br>
     <div class="container">
         <div class="row">
             <div class="col-md-auto" style="background-color: blue;">
@@ -22,24 +22,29 @@
 
     <h2>Materials Needed:</h2><br><br>
     <ul><%  @hobby.materials.each do |m| %>
-            <li><p style="font-size:150%;"><b><%= "#{m.name}:"%></b> <br>Avalible at: <%= link_to "Amazon", m.url, target: :_blank %>,
+            <li><p style="font-size:150%;"><b><%= "#{m.name}:"%></b><br> <br>Avalible at: <%= link_to "Amazon", m.url, target: :_blank %>,
                 <%= link_to "Ebay", "https://www.ebay.com/sch/i.html?_from=R40&_trksid=m570.l1313&_nkw=#{m.name}&_sacat=0&LH_TitleDesc=0&_osacat=0&_odkw=#{m.name}", target: :_blank %>, and 
                 <%= link_to "Walmart", "https://www.walmart.com/search/?query=#{m.name}", target: :_blank %>
-                or <%= link_to "BUY LOCAL!", buy_local_path(m.id), target: :_blank %></p></li><br>
-            <% if session[:username] == @hobby.created_by || session[:admin] %>
-                <%= button_to "Remove #{m.name}", hobby_material_path(@hobby.hobby_materials.find_by(material_id: m.id).id), class: "btn btn-primary btn-sm", method: :delete %>
-                <% end %><br>
-        <% end %></ul>
+                or <%= link_to "BUY LOCAL!", buy_local_path(m.id), target: :_blank %></p></li>
+                <br>
+                <% if session[:username] == @hobby.created_by || session[:admin] %>
+                    <%= button_to "Remove #{m.name}", hobby_material_path(@hobby.hobby_materials.find_by(material_id: m.id).id), class: "btn btn-primary btn-sm", method: :delete %>
+                <br>
+            <% end %>
+            <br>
+        <% end %>
+    </ul>
 
-            </div>
+         </div>
     </div>
-
+    <br>
     <% if @hobby.created_by && @hobby.created_by != "Admin"  %>
         <h4>Contributed by: <%= @hobby.created_by %></h4>
     <% end  %>
-
+    <br>
+    <%= button_to "Save Hobby", hobby_path(@hobby), class: "btn btn-primary btn-sm", method: :patch %>
+    <br>
     <% if session[:username] == @hobby.created_by || session[:admin] %>
         <div><%= button_to "Delete Hobby", hobby_path(@hobby), class: "btn btn-primary btn-sm", method: :delete %></div>
     <% end %>
     <br>
-    <%= button_to "Save Hobby", hobby_path(@hobby), class: "btn btn-primary btn-sm", method: :patch %>
